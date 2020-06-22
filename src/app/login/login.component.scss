@@ -1,0 +1,52 @@
+@import '../../styles/colors';
+
+.login {
+    &__form {
+        display: flex;
+        flex-direction: column;
+        background-color: $color-primary;
+        color: $color-white;
+        width: 50%;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        padding: 3rem;
+        border-radius: 1rem;
+    }
+
+    &__title {
+        text-align: center;
+        font-size: 5rem;
+    }
+
+    &__username-label {
+        font-size: 2rem;
+        margin-top: 2rem;
+    }
+
+    input {
+        padding: 1rem;
+        margin-top: 0.5rem;
+        height: 4rem;
+        border-radius: 1rem;
+        border: 1px solid white;
+        background-color: white;
+        font-size: 2rem;
+    }
+
+    input:active, input:focus {
+        outline: none;
+    }
+
+    &__submit-button {
+        margin-top: 2rem;
+        width: 25%;
+        height: 3rem;
+        border-radius: 1rem;
+        border: 1px solid white;
+        align-self: center;
+        outline: none;
+        font-size: 1.5rem;
+    }
+}

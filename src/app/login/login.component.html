@@ -1,0 +1,18 @@
+<div class="login">
+    <form #form="ngForm" 
+          class="login__form"
+          (ngSubmit)="login()">
+        <h1 class="login__title">Chatterbox</h1>
+        <label for="username" class="login__username-label">Username</label>
+        <input type="text" 
+               name="username"
+               class="login__username-input"
+               required
+               minlength="5"
+               ngModel>
+        <button class="login__submit-button"
+                [disabled]="form.invalid">
+                Start Chatting
+        </button>
+    </form>
+</div>
