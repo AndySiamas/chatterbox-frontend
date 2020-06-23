@@ -6,7 +6,8 @@
         flex-direction: column;
         background-color: $color-primary;
         color: $color-white;
-        width: 50%;
+        height: 28rem;
+        width: 70rem;
         position: fixed;
         top: 50%;
         left: 50%;
@@ -47,6 +48,16 @@
         border: 1px solid white;
         align-self: center;
         outline: none;
+        font-size: 1.5rem;
+        cursor: pointer;
+    }
+
+    &__submit-button:disabled {
+        cursor: not-allowed;
+    }
+
+    &__error-message {
+        margin-top: 1rem;
         font-size: 1.5rem;
     }
 }
