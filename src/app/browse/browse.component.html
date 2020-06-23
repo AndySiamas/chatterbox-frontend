@@ -1,1 +1,10 @@
-<p>Browse chat rooms</p>
+<div class="browse">
+    <h1 class="browse__title">Browse Chatrooms</h1>
+    <div class="browse__chatrooms">
+        <button class="browse__chatroom-box"
+            *ngFor="let chatroom of this.chatrooms"
+            (click)="this.onChatroomClick(chatroom)">
+            {{ chatroom.name }}
+        </button>
+    </div>
+</div>
