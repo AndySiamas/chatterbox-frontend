@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import Chatroom from '../shared/models/chatroom.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-browse',
@@ -7,9 +9,19 @@ import { Component, OnInit } from '@angular/core';
 })
 export class BrowseComponent implements OnInit {
 
-  constructor() { }
+  public chatrooms: Chatroom[] = [ { name: 'General' }, 
+                                   { name: 'Health' }, 
+                                   { name: 'Beauty' }, 
+                                   { name: 'Sports' },
+                                   { name: 'Technology' },
+                                   { name: 'Dating' } ];
 
-  ngOnInit(): void {
+  public constructor(private router: Router) {}
+
+  public ngOnInit(): void {}
+
+  public onChatroomClick(chatroom: Chatroom): void {
+    console.log(`${chatroom.name} room clicked!`);
   }
 
 }
