@@ -1,0 +1,24 @@
+<div class="chat">
+    <h1 class="chat__title">{{ this.id | titlecase }}</h1>
+    <div class="chat__content">
+        <div class="chat__users">
+            <h2 class="chat__users-title">USERS</h2>
+            <ul class="chat__users-list">
+                <li class="chat__users-item">Andy 1</li>
+            </ul>
+        </div>
+        <div class="chat__messages">
+            <h2 class="chat__messages-title">MESSAGES</h2>
+            <div class="chat__messages-list">
+                <div class="chat__messages-item">Andy 1</div>
+            </div>
+            <div class="chat__messages-user-area">
+                <input type="text" class="chat__messages-user-input" #userinput>
+                <button class="chat__messages-user-submit"
+                        (click)="onSendMessage()">
+                    Send
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
