@@ -7,10 +7,9 @@ import { Observable } from 'rxjs';
 })
 export class ChatroomService {
 
-  public testEvent: Observable<string> = this.socket.fromEvent<string>('testEvent');
+  public messages: Observable<string> = this.socket.fromEvent<string>('messages');
   
   public constructor(private socket: Socket) {}
 
-  public getSocketInfo() {
-  }
+  public getSocketInfo() {}
 }
