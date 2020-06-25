@@ -9,19 +9,19 @@ import { Router } from '@angular/router';
 })
 export class BrowseComponent implements OnInit {
 
-  public chatrooms: Chatroom[] = [ { name: 'General' }, 
-                                   { name: 'Health' }, 
-                                   { name: 'Beauty' }, 
-                                   { name: 'Sports' },
-                                   { name: 'Technology' },
-                                   { name: 'Dating' } ];
+  public chatrooms: Chatroom[] = [ { name: 'General', id: 'general' }, 
+                                   { name: 'Health', id: 'health' }, 
+                                   { name: 'Beauty', id: 'beauty' }, 
+                                   { name: 'Sports', id: 'sports' },
+                                   { name: 'Technology', id: 'technology' },
+                                   { name: 'Dating', id: 'dating' } ];
 
   public constructor(private router: Router) {}
 
   public ngOnInit(): void {}
 
   public onChatroomClick(chatroom: Chatroom): void {
-    console.log(`${chatroom.name} room clicked!`);
+    this.router.navigate(['rooms', chatroom.id]);
   }
 
 }
