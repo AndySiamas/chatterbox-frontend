@@ -4,6 +4,8 @@ import { Subscription } from 'rxjs';
 import User from '../shared/models/user.model';
 import Message from '../shared/models/message.model';
 import { ChatroomService } from './chatroom.service';
+import { AuthService } from '../auth/auth.service';
+import { Socket } from 'ngx-socket-io';
 
 @Component({
   selector: 'app-chatroom',
@@ -12,8 +14,9 @@ import { ChatroomService } from './chatroom.service';
 })
 export class ChatroomComponent implements OnInit, OnDestroy {
 
-  public id: string;
+  public roomId: string;
   public users: User[] = [];
+  public messages: Message[] = [];
 
   private paramsSub: Subscription;
   private messagesSub: Subscription;
@@ -22,11 +25,13 @@ export class ChatroomComponent implements OnInit, OnDestroy {
   public userInput: ElementRef;
 
   public constructor(private route: ActivatedRoute,
-                     private chatService: ChatroomService) {}
+                     private chatService: ChatroomService,
+                     private authService: AuthService,
+                     private socket: Socket) {}
 
   public ngOnInit(): void {
     this.subscribeToParams();
-    this.subscribeToMessages();
+    this.subscribeToEvents();
   }
 
   public ngOnDestroy(): void {
@@ -36,18 +41,26 @@ export class ChatroomComponent implements OnInit, OnDestroy {
 
   private subscribeToParams(): void {
     this.paramsSub = this.route.params.subscribe((params: Params) => {
-      this.id = params['id'];
+      this.roomId = params['id'];
     });
   }
 
-  private subscribeToMessages(): void {
-    this.messagesSub = this.chatService.messages.subscribe((message: string) => {
-      console.log(message);
+  private subscribeToEvents(): void {
+    this.messagesSub = this.chatService.onNewMessage.subscribe((message: Message) => {
+      this.addNewMessage(message);
     });
+  }
+
+  public addNewMessage(newMessage: Message): Message {
+    this.messages.push(newMessage);
+    return newMessage;
   }
 
   public onSendMessage(): void {
-    console.log(this.userInput.nativeElement.value);
+    let messageText = this.userInput.nativeElement.value;
+    if (messageText === '') return;
+    let newMessage: Message = new Message(messageText, new Date(), this.authService.getUsername(), this.roomId);
+    this.socket.emit('sendMessage', newMessage)
+    this.userInput.nativeElement.value = '';
   }
-
 }
