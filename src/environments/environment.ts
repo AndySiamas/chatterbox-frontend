@@ -4,7 +4,11 @@
 
 export const environment = {
   production: false,
-  socketEndpoint: 'http://localhost:3000'
+  chatServerEndpoint: 'http://localhost:3001',
+  mainServerHost: 'http://localhost:3000',
+  requestTokenEndpoint: '/requestToken',
+  requestValidationForTokenEndpoint: '/requestIfTokenIsValid',
+  defaultRoomsEndpoint: '/defaultRooms'
 };
 
 /*
