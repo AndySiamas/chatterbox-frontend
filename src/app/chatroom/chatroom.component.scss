@@ -46,6 +46,9 @@
         flex-direction: column;
         flex: 5;
         background-color: rgb(99, 113, 179);
+        height: 100%;
+        width: 80%;
+        overflow: scroll;
     }
 
     &__messages-title {
@@ -53,15 +56,33 @@
     }
 
     &__messages-list {
-        flex: 1;
         padding: 1rem;
         height: 100%;
-        overflow: scroll;
+        width: 100%;
         background-color: purple;
+        overflow: scroll;
     }
 
     &__messages-item {
+        width: 100%;
         font-size: 1.4rem;
+    }
+
+    &__messages-item-time {
+        font-size: 1.4rem;
+        color: $color-white;
+    }
+
+    &__messages-item-username {
+        font-size: 1.4rem;
+        color: $color-white;
+    }
+
+    &__messages-item-text {
+        font-size: 1.4rem;
+        word-wrap: break-word;
+        word-break: break-all;
+        color: white;
     }
 
     &__messages-user-area {
