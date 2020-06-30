@@ -1,15 +1,17 @@
 import { Injectable } from '@angular/core';
-import { Socket } from 'ngx-socket-io';
 import { Observable } from 'rxjs';
+import { Socket } from 'ngx-socket-io';
+import Message from '../shared/models/message.model';
+import User from '../shared/models/user.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ChatroomService {
 
-  public messages: Observable<string> = this.socket.fromEvent<string>('messages');
+  public onNewMessage: Observable<Message> = this.socket.fromEvent<Message>('message');
   
   public constructor(private socket: Socket) {}
 
-  public getSocketInfo() {}
+  
 }
