@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Token } from '../shared/models/token.model';
 import { NetworkService } from '../network/network.service';
-import { take } from 'rxjs/operators';
 import { Socket } from 'ngx-socket-io';
+import ChatterboxResponse from '../../../../project-shared/models/chatterbox-response.model';
+import { CookieService } from 'ngx-cookie-service';
+import ChatterboxError from '../../../../project-shared/models/chatterbox-error.model';
 
 @Injectable({
   providedIn: 'root'
@@ -10,11 +12,45 @@ import { Socket } from 'ngx-socket-io';
 export class AuthService {
 
   private username: string = null;
-  private userToken: Token = null;
+  private token: string = null;
   private currentRoom: string = null;
 
   public constructor(private networkService: NetworkService,
+                     private cookieService: CookieService,
                      private socket: Socket) {}
+
+  public setUsernameAndTokenFromCookies(): void {
+    this.setUsernameFromCookies();
+    this.setUserTokenFromCookies();
+  }
+
+  public async login(username: string, password: string): Promise<boolean> {
+    let response: ChatterboxResponse = await this.networkService.requestLogin(username, password).toPromise();
+    let token: string = response.data.token;
+    if (response.isError || !token) {
+      let error = <ChatterboxError>response;
+      console.log(`Server response error: ${error.data.message}`)
+      return false;
+    }
+
+    this.setUsername(username);
+    this.setToken(token);
+    return true;
+  }
+  
+  public async signup(username: string, password: string, email: string): Promise<boolean> {
+    let response: ChatterboxResponse = await this.networkService.requestSignup(username, password, email).toPromise();
+    let token: string = response.data.token;
+    if (response.isError || !token) {
+      let error = <ChatterboxError>response;
+      console.log(`Server response error: ${error.data.message}`)
+      return false;
+    }
+
+    this.setUsername(username);
+    this.setToken(token);
+    return true;
+  }
 
   public hasUsername(): boolean {
     return this.username !== null;
@@ -24,60 +60,50 @@ export class AuthService {
     return this.username;
   }
 
-  public setNewUsername(username: string): void {
+  public setUsername(username: string): void {
     this.username = username;
-    sessionStorage.setItem('username', username);
-  } 
+    this.cookieService.set('username', username, 365);
+  }
 
-  public setUsernameFromSession(): void {
-    let username: string = sessionStorage.getItem('username');
-    if (username !== null) {
+  public setToken(token: string): void {
+    this.token = token;
+    this.cookieService.set('token', token, 365);
+  }
+
+  public setUsernameFromCookies(): void {
+    let username: string = this.cookieService.get('username');
+    if (username) {
       this.username = username;
     }
   }
 
-  public hasUserToken(): boolean {
-    return this.userToken !== null;
-  }
-
-  public async setUserTokenFromSession(): Promise<boolean> {
-    let userTokenFromSession = await this.getUserTokenFromSession();
-    if (userTokenFromSession !== null) {
-      this.userToken = userTokenFromSession;
-      sessionStorage.setItem('token', userTokenFromSession.value);
+  public async hasValidUserToken(): Promise<boolean> {
+    if (this.token === null) {
+      return false;
     }
-    return userTokenFromSession === null;
-  }
 
-  public async getUserTokenFromSession(): Promise<Token> {
-    let tokenValueFromSession: string = sessionStorage.getItem('token');
-    if (tokenValueFromSession !== null) {
-      let isTokenValid: boolean = await this.networkService.requestIfTokenIsValid(tokenValueFromSession).toPromise();
-      if (isTokenValid) {
-        return new Token(tokenValueFromSession);
-      }
+    let response: ChatterboxResponse = await this.networkService.requestIfTokenIsValid(this.username, this.token).toPromise();
+    let result: boolean = response.data.result;
+
+    if (response.isError || result === undefined) {
+      let error = <ChatterboxError>response;
+      console.log(`Server response error: ${error.data.message}`)
+      return false;
     }
-    return null;
+
+    return result;
   }
 
-  public async setUserTokenFromServer(): Promise<boolean> {
-    let userTokenFromServer = await this.getUserTokenFromServer();
-    if (userTokenFromServer !== null) {
-      this.userToken = userTokenFromServer;
-      sessionStorage.setItem('token', userTokenFromServer.value);
+  public setUserTokenFromCookies(): void {
+    let token: string = this.cookieService.get('token');
+    if (token !== null) {
+      this.token = token;
     }
-    return userTokenFromServer === null;
-  }
-
-  public async getUserTokenFromServer(): Promise<Token> {
-    let userToken = await this.networkService.requestUserToken(this.username).toPromise();
-    return userToken;
   }
 
   public async isAuthenticated(): Promise<boolean> {
-    await this.setUsernameFromSession();
-    await this.setUserTokenFromSession();
-    return this.hasUserToken() && this.hasUsername();
+    let hasValidUserToken: boolean = await this.hasValidUserToken();
+    return hasValidUserToken && this.hasUsername();
   }
 
   public async isAllowedToJoinRoom(roomId: string): Promise<boolean> {
@@ -85,7 +111,7 @@ export class AuthService {
   }
 
   public emitAuthorizedEvent(): void {
-    this.socket.emit('authorized', { username: this.username, token: this.userToken.value }, () => {
+    this.socket.emit('authorized', { username: this.username, token: this.token }, () => {
       console.log('User is authorized!');
     });
   }
