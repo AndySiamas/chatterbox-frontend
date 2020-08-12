@@ -4,10 +4,12 @@
 
 export const environment = {
   production: false,
-  chatServerEndpoint: 'http://localhost:3001',
-  mainServerHost: 'http://localhost:3000',
-  requestTokenEndpoint: '/requestToken',
-  requestValidationForTokenEndpoint: '/requestIfTokenIsValid',
+  socketServerHost: 'http://localhost:3000',
+  mainServerHost: 'http://localhost:3001',
+  loginEndpoint: '/auth/login',
+  signupEndpoint: '/auth/signup',
+  requestTokenEndpoint: '/auth/requestToken',
+  requestValidationForTokenEndpoint: '/auth/isTokenValid',
   defaultRoomsEndpoint: '/defaultRooms'
 };
 
