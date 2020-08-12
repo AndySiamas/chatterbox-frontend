@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from './auth/auth.service';
+import { HttpClient } from '@angular/common/http';
+import { Socket } from 'ngx-socket-io';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -12,5 +15,7 @@ export class AppComponent implements OnInit {
 
   public constructor(private authService: AuthService) {}
 
-  public ngOnInit(): void {}
+  public ngOnInit(): void {
+    this.authService.setUsernameAndTokenFromCookies();
+  }
 }
