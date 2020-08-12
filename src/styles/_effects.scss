@@ -1,0 +1,9 @@
+// BOX SHADOWS
+@mixin box-shadow-light {
+    box-shadow: 6px 6px 3px rgba(0, 0, 0, 0.25);
+}
+
+// TEXT SHADOWS
+@mixin text-shadow-light {
+    text-shadow: 4px 4px 2px rgba(0, 0, 0, 0.4);
+}
