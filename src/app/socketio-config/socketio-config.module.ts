@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 import { environment } from '../../environments/environment';
 
-const config: SocketIoConfig = { url: environment.chatServerEndpoint, options: {} };
+const config: SocketIoConfig = { url: environment.socketServerHost, options: {} };
 
 @NgModule({
   declarations: [],
