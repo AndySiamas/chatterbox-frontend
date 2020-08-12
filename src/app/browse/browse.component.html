@@ -1,10 +1,32 @@
 <div class="browse">
-    <h1 class="browse__title">Browse Chatrooms</h1>
-    <div class="browse__chatrooms">
-        <button class="browse__chatroom-box"
-            *ngFor="let chatroom of this.chatrooms"
-            (click)="this.onChatroomClick(chatroom)">
-            {{ chatroom.name }}
-        </button>
+    <div class="browse__content">
+        <div class="browse__main">
+            <h1 class="browse__title">Main Rooms</h1>
+            <div class="browse__room-list">
+                <div class="browse__room-item"
+                     *ngFor="let room of chatrooms">
+                    <div class="browse__room-item-icon">
+                        <div class="browse__room-item-icon-box">
+                            <svg-icon src="assets/icons/DATING_ICON.svg"
+                                      [svgClass]="['browse__room-item-icon-svg']"
+                                      [applyClass]="true">
+                            </svg-icon>
+                        </div>
+                    </div>
+                    <div class="browse__room-item-summary">
+                        <h2 class="browse__room-item-summary-name">{{ room.name | uppercase }}</h2>
+                        <div class="browse__room-item-summary-description">A place for everyone to come chat!</div>
+                    </div>
+                    <div class="browse__room-item-details">
+                        <div class="browse__room-item-details-user-count">
+                            55
+                        </div>
+                        <div class="browse__room-item-details-user-text">
+                            users
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
