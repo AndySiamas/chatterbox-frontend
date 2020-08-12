@@ -1,6 +1,6 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { NgForm, FormControl, NgModel } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import { NgForm, NgModel } from '@angular/forms';
+import { Router, ActivatedRoute, UrlSegment, UrlSegmentGroup } from '@angular/router';
 import { AuthService } from '../auth/auth.service';
 
 @Component({
@@ -10,32 +10,54 @@ import { AuthService } from '../auth/auth.service';
 })
 export class LoginComponent implements OnInit {
 
-  @ViewChild('form', { static: false })
-  public form: NgForm;
+  @ViewChild('loginForm', { static: false })
+  public loginForm: NgForm;
+
+  @ViewChild('signupForm', { static: false })
+  public signupForm: NgForm;
+
+  @ViewChild('username', { static: false })
+  public usernameControl: NgModel;
 
   public minUsernameChars: number = 4;
   public maxUsernameChars: number = 20;
 
-  constructor(private router: Router,
+  public formType: 'login' | 'signup' = 'login';
+
+  constructor(private route: ActivatedRoute,
+              private router: Router,
               private authService: AuthService) {}
 
-  public ngOnInit(): void {}
-
-  public async login(username: NgModel): Promise<void> {
-    if (this.form.invalid) return;
-    this.authService.setNewUsername(username.value);
-    if (!this.authService.hasUserToken()) {
-      await this.authService.setUserTokenFromServer();
-    }
-    this.router.navigate(['browse']);
+  public ngOnInit(): void {
+    this.subscribeToFormType();
   }
 
-  public getErrorMessage(username: NgModel): string {
-    if (username.value.length < this.minUsernameChars) {
-      return `Username cannot be shorter than ${this.minUsernameChars} characters.`;
-    } else {
-      return 'Invalid username.';
+  private subscribeToFormType(): void {
+    this.route.data.subscribe((data: { formType: 'login' | 'signup' }) => {
+      this.formType = data.formType;
+    });
+  }
+
+  public async login(username: NgModel, password: NgModel): Promise<void> {
+    if (this.loginForm.invalid) {
+      return;
+    }
+
+    let isAuthenticated: boolean = await this.authService.login(username.value, password.value);
+    if (isAuthenticated) {
+      this.router.navigate(['browse']);
     }
   }
 
+  public async signup(username: NgModel, email: NgModel, password: NgModel, confirmedPassword: NgModel) {
+    if (password.value !== confirmedPassword.value) {
+      console.error('Passwords are not identical.');
+      return;
+    }
+
+    if (this.signupForm.valid) {
+      this.authService.signup(username.value, password.value, email.value);
+      return;
+    }
+  }
 }
