@@ -1,55 +1,124 @@
 @import '../../styles/colors';
+@import '../../styles/effects';
 
 .login {
-    &__form {
+    &__box {
         display: flex;
-        flex-direction: column;
-        background-color: $color-primary;
+        flex-direction: row;
+        background-color: $color-white;
         color: $color-white;
-        height: 28rem;
-        width: 70rem;
+        height: 50rem;
+        width: 85rem;
         position: fixed;
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        padding: 3rem;
-        border-radius: 1rem;
+        @include box-shadow-light;
+    }
+
+    &__welcome {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        flex: 3;
+        background-color: $color-secondary;
+        padding: 1.2rem;
+    }
+
+    &__form {
+        display: flex;
+        flex-direction: column;
+        flex: 5;
+        justify-content: center;
+        align-items: center;
+        background-color: $color-white;
+        padding: 1.2rem;
+    }
+
+    &__form-content {
+        width: 70%;
     }
 
     &__title {
+        font-size: 3.8rem;
+        color: $color-white;
+    }
+
+    &__title-secondary {
+        font-size: 1.8rem;
+        color: $color-white;
+    }
+
+    &__form-type {
+        color: $color-primary;
+        font-size: 2.5rem;
         text-align: center;
-        font-size: 5rem;
     }
 
-    &__username-label {
-        font-size: 2rem;
-        margin-top: 2rem;
+    &__slogan {
+        font-size: 1.8rem;
+        color: $color-white;
+        margin-top: 5rem;
+        font-weight: 100;
     }
 
-    input {
+    &__art {
+        height: 20rem;
+        width: 20rem;
+        margin-top: 3rem;
+        user-select: none;
+    }
+
+    &__input {
         padding: 1rem;
-        margin-top: 0.5rem;
         height: 4rem;
-        border-radius: 1rem;
-        border: 1px solid white;
-        background-color: white;
-        font-size: 2rem;
+        width: 100%;
+        margin-top: 1rem;
+        align-self: center;
+        border: 1px solid rgba(0,0,0,0);
+        background-color: $color-light-grey-1;
+        font-size: 1.5rem;
+        color: $color-primary;
+        outline: none;
     }
 
     input:active, input:focus {
         outline: none;
+        transition: 0.1s;
+        border: 1px solid rgba($color-primary, 0.5);    
+    }
+
+    input:-webkit-autofill,
+    input:-webkit-autofill:hover, 
+    input:-webkit-autofill:focus, 
+    input:-webkit-autofill:active  {
+        box-shadow: 0 0 0 30px $color-light-grey-1 inset !important;
+        -webkit-box-shadow: 0 0 0 30px $color-light-grey-1 inset !important;
+        border: 1px solid rgba($color-primary, 0.5);
+        font-size: 1.5rem;
+        color: $color-primary !important;
+        -webkit-text-fill-color: $color-primary !important;
+        outline: none;  
+    }
+
+    input::placeholder {
+        font-size: 1.5rem;
+        color: $color-grey-1;
+        transition: 1s;
     }
 
     &__submit-button {
-        margin-top: 2rem;
-        width: 25%;
-        height: 3rem;
-        border-radius: 1rem;
-        border: 1px solid white;
+        margin-top: 1rem;
+        height: 4rem;
+        width: 81%;
         align-self: center;
         outline: none;
         font-size: 1.5rem;
         cursor: pointer;
+        color: $color-white;
+        background-color: $color-primary;
+        width: 100%;
     }
 
     &__submit-button:disabled {
@@ -57,7 +126,23 @@
     }
 
     &__error-message {
-        margin-top: 1rem;
+        margin-bottom: 1rem;
         font-size: 1.5rem;
+        color: $color-primary;
+        align-self: center;
+        width: 80%;
+    }
+
+    &__switch-form {
+        text-align: right;
+        margin-top: 0.5rem;
+        color: $color-grey-1;
+        font-size: 1.4rem;
+
+        a, &__link, &__link:visited {
+            color: inherit;
+            text-decoration: underline;
+            font-weight: bold;
+        }
     }
 }

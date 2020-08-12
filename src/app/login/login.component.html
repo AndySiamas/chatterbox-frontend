@@ -1,20 +1,103 @@
 <div class="login">
-    <form #form="ngForm" 
-          class="login__form"
-          (ngSubmit)="login(username)">
-        <h1 class="login__title">Chatterbox</h1>
-        <label for="username" class="login__username-label">Username</label>
-        <input type="text" 
-               name="username"
-               class="login__username-input"
-               [minlength]="this.minUsernameChars"
-               #username="ngModel"
-               required
-               ngModel>
-        <span class="login__error-message" *ngIf="username.touched && username.invalid"> {{ this.getErrorMessage(username) }} </span>
-        <button class="login__submit-button"
-                [disabled]="form.invalid">
-                Start Chatting
-        </button>
-    </form>
+    <div class="login__box">
+
+        <!-- WELCOME PANEL -->
+        <div class="login__welcome">
+            <h2 class="login__title-secondary">WELCOME TO</h2>
+            <h1 class="login__title">CHATTERBOX</h1>
+            <img src="../../assets/art/chatbot.png" alt="Chatbot" class="login__art">
+            <h4 class="login__slogan">MEET. CONNECT. RELAX.</h4>
+        </div>
+
+        <!-- LOGIN FORM -->
+        <form #loginForm="ngForm" 
+            class="login__form"
+            (ngSubmit)="login(username, password)"
+            *ngIf="this.formType === 'login'">
+            <div class="login__form-content">
+                <h3 class="login__form-type"> LOGIN </h3>
+                <input  type="text" 
+                        name="username"
+                        class="login__input"
+                        [minlength]="this.minUsernameChars"
+                        [maxlength]="this.maxUsernameChars"
+                        placeholder="username"
+                        #username="ngModel"
+                        required
+                        ngModel>
+                <input  type="password" 
+                        name="password"
+                        class="login__input"
+                        placeholder="password"
+                        #password="ngModel"
+                        required
+                        ngModel>
+                <button class="login__submit-button"
+                        [disabled]="loginForm.invalid">
+                        LOGIN
+                </button>
+                <div class="login__switch-form">
+                    <span class="login__switch-form__text">Not registered? </span>
+                    <span class="login__switch-form__link">
+                        <a [routerLink]="['../signup']">Sign up.</a>
+                    </span>
+                </div>
+            </div>
+        </form>
+
+        <!-- SIGN UP FORM -->
+        <form #signupForm="ngForm" 
+            class="login__form"
+            (ngSubmit)="signup(username, email, password, confirmedPassword)"
+            *ngIf="this.formType === 'signup'">
+            <div class="login__form-content">
+                <h3 class="login__form-type"> CREATE ACCOUNT </h3>
+                <input  type="text" 
+                        name="username"
+                        class="login__input"
+                        [minlength]="this.minUsernameChars"
+                        [maxlength]="this.maxUsernameChars"
+                        placeholder="username"
+                        #username="ngModel"
+                        required
+                        ngModel>
+                <input  type="text" 
+                        name="email"
+                        class="login__input"
+                        placeholder="email"
+                        #email="ngModel"
+                        email
+                        required
+                        ngModel>
+                <input  type="password" 
+                        name="password"
+                        class="login__input"
+                        [minlength]="this.minUsernameChars"
+                        [maxlength]="this.maxUsernameChars"
+                        placeholder="password"
+                        #password="ngModel"
+                        required
+                        ngModel>
+                <input  type="password" 
+                        name="confirmPassword"
+                        class="login__input"
+                        [minlength]="this.minUsernameChars"
+                        [maxlength]="this.maxUsernameChars"
+                        placeholder="confirm password"
+                        #confirmedPassword="ngModel"
+                        required
+                        ngModel>
+                <button class="login__submit-button"
+                        [disabled]="signupForm.invalid">
+                        SIGN UP
+                </button>
+                <div class="login__switch-form">
+                    <span class="login__switch-form__text">Already registered? </span>
+                    <span class="login__switch-form__link">
+                        <a [routerLink]="['../login']">Login.</a>
+                    </span>
+                </div>
+            </div>
+        </form>
+    </div>
 </div>
