@@ -3,6 +3,8 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { SocketIoConfigurationModule } from './socketio-config/socketio-config.module';
+import { AngularSvgIconModule } from 'angular-svg-icon';
+import { CookieService } from 'ngx-cookie-service';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -22,9 +24,10 @@ import { ChatroomComponent } from './chatroom/chatroom.component';
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
-    SocketIoConfigurationModule
+    SocketIoConfigurationModule,
+    AngularSvgIconModule.forRoot()
   ],
-  providers: [],
+  providers: [CookieService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
